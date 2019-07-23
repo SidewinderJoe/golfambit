@@ -183,7 +183,7 @@
     </cffunction>
 
     <cffunction name="getCourseDetails" access="public" hint="Get google place id and course details" returnFormat="JSON">
-        <cfset var apikey = "AIzaSyBcKg2Wh15cYQOPrbA0eFfJB997iR-9gm4">
+        <cfset var apikey = "">
         <cfargument name="namezip" type="string" required="true">
 
         <cfset var PlaceIDRequest = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input='#namezip#'&inputtype=textquery&fields=place_id&key=#apikey#">
