@@ -5,7 +5,7 @@
         <cfargument name="origin" type="string" required="true">
         <cfargument name="destinations" type="string" required="true">
 
-        <cfset var apikey = "AIzaSyBcKg2Wh15cYQOPrbA0eFfJB997iR-9gm4">
+        <cfset var apikey = "">
 
         <cfset var PlaceIDRequest = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#origin#&destinations=#destinations#&key=#apikey#">
 
