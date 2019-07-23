@@ -1,0 +1,103 @@
+<html>
+<head>
+</head>
+<body>
+    <input id="searchTextField" type="text" size="50" placeholder="Enter a location" autocomplete="on" runat="server" />
+    <input type="hidden" id="cityLat" name="cityLat" />
+    <input type="hidden" id="cityLng" name="cityLng" />
+    <input type="" placeholder="Enter mile radius" id="mileRadius" name="mileRadius" />
+    <button onclick="findCourses()">Find Golf Courses</button>
+
+    <div id="container"></div>
+</body>
+
+<style>
+.courseCard {
+    border: 2px solid black;
+    width: 200px;
+    height: 100px;
+    background-color: lightgray;
+    padding: 15px;
+    margin: 20px;
+}
+.courseCard p {
+    float: left;
+}
+#container div {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcKg2Wh15cYQOPrbA0eFfJB997iR-9gm4&libraries=places"></script>
+<script>
+    //Google Maps Search Field
+    function initialize() {
+        var input = document.getElementById('searchTextField');
+        var options = {
+        componentRestrictions: {country: 'us'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            document.getElementById('cityLat').value = place.geometry.location.lat();
+            document.getElementById('cityLng').value = place.geometry.location.lng();
+        });
+
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+    
+    //Prevent Enter from being clicked for Search Field
+        $("#searchTextField").keypress(function(e){
+            if(e.keyCode === 13){
+                e.preventDefault();
+            }
+        });
+
+
+
+        //Find courses from search criteria
+        const findCourses = async () => {
+            document.getElementById("container").innerHTML = "";
+            var cityLat = document.getElementById("cityLat").value;
+            var cityLng = document.getElementById("cityLng").value;
+            var mileRadius = document.getElementById("mileRadius").value * 1.60934;
+            console.log(mileRadius);
+            var test = document.getElementById('container');
+            var element = document.createElement("div");  
+
+            const response = await fetch('http://spatial.virtualearth.net/REST/v1/data/f22876ec257b474b82fe2ffcb8393150/NavteqNA/NavteqPOIs?spatialFilter=nearby('+ cityLat + ','+ cityLng + ',' + mileRadius +')&$filter=EntityTypeID%20eq%20%277992%27&$select=EntityID,DisplayName,Latitude,Longitude,PostalCode,__Distance&$format=json&key=AgsuWSg76hKJqL7bmMp8H9QykuCqay4hIoxIakloj75Uk8N1wZahOUQjKwytq8Kp');
+            const courseJson = await response.json(); //extract JSON from the http response
+            
+            // Create HTML with courseJson
+            for (var i = 0; i < courseJson.d.results.length; i++) {
+                var distanceMiles = courseJson.d.results[i].__Distance * 0.62137;
+                var milesFormatted = distanceMiles.toFixed(2);
+                var courseName = courseJson.d.results[i].DisplayName;
+                var courseZip = courseJson.d.results[i].PostalCode;
+                var courseID = courseJson.d.results[i].EntityID;
+                
+                element.innerHTML += '<div class="courseCard">' + "<p>" + courseName + "</p>" + "<p>" + milesFormatted + " miles away" + "</p>" + '<button onclick="getCourseDetail('+'&apos;'+courseName+'&apos;'+','+'&apos;'+courseZip+'&apos;'+')"' + 'id="'+ courseID +'">Course Details</button>' + '</div>';
+
+            }
+            test.appendChild(element);
+        }
+
+        const getCoursePlaceID = async (nameZip) => {
+            var response = fetch('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input='+nameZip+'&inputtype=textquery&fields=place_id&key=AIzaSyBcKg2Wh15cYQOPrbA0eFfJB997iR-9gm4');
+            var courseIDJson = response.json();
+            console.log(courseIDJson);
+        }
+
+        function getCourseDetail(courseName, courseID) {
+            console.log(courseName + " " + courseID);
+            var nameZip = courseName.replace(/ /g, "%20")+courseID.replace(/^/, "%20");
+            console.log(nameZip);
+            getCoursePlaceID(nameZip);
+        }
+
+</script>
+</html>

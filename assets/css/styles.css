@@ -1,0 +1,99 @@
+.card-header {
+    background-color: darkgreen;
+}
+
+.card-header h6 {
+    color: white;
+    text-align: center;
+}
+
+.card-body p {
+    text-align: center;
+}
+
+.card_container {
+    margin-bottom: 20px;
+}
+
+#searchTextField {
+    margin-bottom: 20px;
+}
+
+#mileRadius {
+    margin-bottom: 20px;
+}
+
+#search_button {
+    margin-bottom: 20px;
+}
+
+#driving_miles_switch {
+    margin-bottom: 20px;
+}
+
+#course_locator {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+@media (max-width: 500px) {
+    #search_button {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+button span {
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    margin-left: 5px;
+}
+
+#back_button {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+#course_info {
+    text-align: center;
+}
+
+#weather_card {
+    /* margin-left: 20px; */
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.arrow-degree-reset {
+    transform: rotate(-45deg);
+}
+
+#photo_heading {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
